@@ -7,7 +7,6 @@ function Signup() {
     const [password, setPassword] = useState("");
 
     const handleSignup = async () => {
-        // 🔥 VALIDATION RULES
         if (!username || !email || !password)
             return alert("All fields are required!");
 
