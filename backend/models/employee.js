@@ -7,6 +7,7 @@ const employeeSchema = new mongoose.Schema({
   position: { type: String, required: true },
   salary: { type: Number, required: true },
   date_of_joining: { type: Date, required: true },
+  photo: { type: String, default: "" },
   department: { type: String, required: true },
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now }

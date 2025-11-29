@@ -19,6 +19,9 @@ app.use(express.json());
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/emp', employeeRoutes);
 
+app.use("/uploads", express.static("uploads"));
+
+
 // Error handler middleware
 app.use((err, req, res, next) => {
   console.error('Error:', err.message);

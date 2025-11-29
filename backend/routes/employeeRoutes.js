@@ -1,6 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const Employee = require('../models/employee');
+const multer = require("multer");
+const path = require("path");
+
+const storage = multer.diskStorage({
+  destination: "uploads/",
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ storage });
 
 // CREATE EMPLOYEE
 router.post('/employees', async (req, res, next) => {
@@ -73,6 +84,23 @@ router.get('/search', async (req, res, next) => {
     res.status(200).json(results);
   } catch (err) {
     next(err);
+  }
+});
+
+// UPLOAD PHOTO
+router.post("/employees/upload/:id", upload.single("photo"), async (req, res) => {
+  try {
+    const updated = await Employee.findByIdAndUpdate(
+      req.params.id,
+      { photo: req.file.filename },
+      { new: true }
+    );
+
+    res.json({ message: "Photo uploaded", employee: updated });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Upload failed" });
   }
 });
 
