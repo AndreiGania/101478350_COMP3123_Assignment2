@@ -7,7 +7,7 @@ const userRoutes = require('./routes/userRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
 const cors = require("cors");
 
-dotenv.config(); // Load .env variables
+dotenv.config();
 
 const app = express();
 
@@ -37,7 +37,7 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => {
   console.log('MongoDB connected');
   app.listen(PORT, () => {
-    console.log(`🚀 Server running at http://localhost:${PORT}`);
+    console.log(`Server running at http://localhost:${PORT}`);
   });
 })
 .catch(err => console.error('MongoDB Error:', err));

@@ -13,7 +13,6 @@ const employeeSchema = new mongoose.Schema({
   updated_at: { type: Date, default: Date.now }
 });
 
-// Update `updated_at` before saving
 employeeSchema.pre('save', function (next) {
   this.updated_at = Date.now();
   next();

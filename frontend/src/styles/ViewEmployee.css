@@ -1,0 +1,53 @@
+.view-card {
+  width:420px;
+  background:#161b22;
+  margin:60px auto;
+  padding:30px;
+  border-radius:12px;
+  box-shadow:0 0 18px rgba(255,255,255,0.06);
+  text-align:center;
+  color:#e6e6e6;
+  border:1px solid #30363d;
+}
+
+.view-card h2 {
+  font-size:24px;
+  font-weight:700;
+  margin-bottom:15px;
+}
+
+.photo-box {
+  display:flex;
+  justify-content:center;
+  margin-bottom:15px;
+}
+
+.profile-img {
+  width:160px;
+  height:160px;
+  object-fit:cover;
+  border-radius:12px;
+  border:2px solid #30363d;
+}
+
+.details {
+  text-align:left;
+  font-size:16px;
+  margin-top:15px;
+  line-height:28px;
+}
+
+.details span { font-weight:600; }
+
+.back-btn {
+  margin-top:25px;
+  padding:10px 18px;
+  background:#2563eb;
+  color:white;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:15px;
+}
+
+.back-btn:hover { background:#1d4ed8; }

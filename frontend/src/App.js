@@ -6,6 +6,7 @@ import AddEmployee from "./components/AddEmployee";
 import EditEmployee from "./components/EditEmployee";
 import ViewEmployee from "./components/ViewEmployee";
 import ProtectedRoute from "./components/ProtectedRoute";
+import "./styles/App.css";
 
 function App() {
   const isLoggedIn = !!localStorage.getItem("token");
@@ -13,24 +14,24 @@ function App() {
   return (
     <Router>
 
-      <nav style={{ padding:10, background:"#eee", marginBottom:20 }}>
-        {isLoggedIn ? (
-          <>
-            <Link to="/login" style={{ marginRight:15 }}>Login</Link>
-            <Link to="/signup" style={{ marginRight:15 }}>Signup</Link>
-            <Link to="/employees" style={{ marginRight:15 }}>Employees</Link>
-            <button 
-              onClick={()=>{ localStorage.removeItem("token"); window.location="/login"; }}
-              style={{ marginLeft:15 }}
-            >
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <Link to="/login" style={{ marginRight:15 }}>Login</Link>
-            <Link to="/signup" style={{ marginRight:15 }}>Signup</Link>
-          </>
+      <nav className="navbar">
+
+        <div className="nav-left">
+          <Link to="/employees">Employees</Link>
+          <Link to="/signup">Signup</Link>
+          <Link to="/login">Login</Link>
+        </div>
+
+        {isLoggedIn && (
+          <button 
+            className="logout-btn"
+            onClick={() => { 
+              localStorage.removeItem("token"); 
+              window.location = "/login"; 
+            }}
+          >
+            Logout
+          </button>
         )}
       </nav>
 

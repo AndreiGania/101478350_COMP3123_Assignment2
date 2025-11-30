@@ -1,0 +1,90 @@
+.edit-card {
+  width: 380px;
+  background: #161b22;
+  margin: 60px auto;
+  padding: 35px;
+  border-radius: 14px;
+  box-shadow: 0 0 22px rgba(0,0,0,0.45);
+  text-align: center;
+  color: #e6e6e6;
+  border: 1px solid #30363d;
+}
+
+/* TITLE */
+.edit-card h2 {
+  font-size: 23px;
+  font-weight: 700;
+  margin-bottom: 22px;
+}
+
+.edit-input {
+  width: 92%;
+  margin: 10px auto;
+  display: block;
+  padding: 12px;
+  background: #0d1117;
+  border: 1px solid #3d434a;
+  border-radius: 6px;
+  color: white;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+.edit-input:focus {
+  border-color: #58a6ff;
+  outline: none;
+}
+
+/* IMAGE SECTION */
+.photo-box {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-pic {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid #30363d;
+  margin-bottom: 12px;
+}
+
+.upload-btn {
+  margin-top: 8px;
+  padding: 10px 18px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 150px;
+}
+
+.upload-btn:hover {
+  background: #1e4fd1;
+}
+
+.btn-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 28px;
+  gap: 10px;
+}
+
+.save-btn, .cancel-btn {
+  width: 50%;
+  padding: 12px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  border: none;
+}
+
+.save-btn { background: #28a745; }
+.cancel-btn { background: #d43f3a; }
+
+.save-btn:hover, .cancel-btn:hover { opacity: .85; }

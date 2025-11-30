@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import api from "../api";
+import "../styles/EditEmployee.css";
 
 export default function EditEmployee() {
 
@@ -8,79 +9,92 @@ export default function EditEmployee() {
   const nav = useNavigate();
 
   const [f, setF] = useState(null);
-  const [photo, setPhoto] = useState(null); // NEW: image upload state
+  const [photo, setPhoto] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/api/v1/emp/employees/${id}`)
+    api.get(`/emp/employees/${id}`)
       .then(res => setF(res.data));
   }, []);
 
-  const save = () => {
-    axios.put(`http://localhost:8080/api/v1/emp/employees/${id}`, f)
-      .then(() => {
-        alert("Employee Updated!");
-        nav("/employees");
-      });
+  const save = async () => {
+    try {
+      await api.put(`/emp/employees/${id}`, f);
+      alert("Employee Updated!");
+      nav("/employees");
+    } catch {
+      alert("Update failed");
+    }
   };
 
-  // upload photo function
-  const uploadPhoto = () => {
-    if (!photo) return alert("Choose a photo first!");
+  const uploadPhoto = async () => {
+    if (!photo) return alert("Choose a photo first");
 
     let fd = new FormData();
     fd.append("photo", photo);
 
-    axios.post(`http://localhost:8080/api/v1/emp/employees/upload/${id}`, fd)
-      .then(() => {
-        alert("Profile Photo Updated!");
-        window.location.reload(); // refresh to show new image
-      });
+    try {
+      await api.post(`/emp/employees/upload/${id}`, fd);
+      alert("Photo Updated");
+      window.location.reload();
+    } catch {
+      alert("Upload failed");
+    }
   };
 
-  if (!f) return <h3>Loading...</h3>;
+  if (!f) return <h3 style={{ textAlign:"center" }}>Loading...</h3>;
 
   return (
-    <div style={{ width:400, margin:"auto", textAlign:"center" }}>
-      
+    <div className="edit-card">
+
       <h2>Edit Employee</h2>
 
-      {/* TEXT FIELDS */}
-      <input value={f.first_name} 
-             onChange={e=>setF({...f, first_name:e.target.value})}
-             placeholder="First Name" /><br/><br/>
+      <input 
+        className="edit-input"
+        placeholder="First Name"
+        value={f.first_name}
+        onChange={e => setF({ ...f, first_name:e.target.value })}
+      />
 
-      <input value={f.last_name} 
-             onChange={e=>setF({...f, last_name:e.target.value})}
-             placeholder="Last Name" /><br/><br/>
+      <input 
+        className="edit-input"
+        placeholder="Last Name"
+        value={f.last_name}
+        onChange={e => setF({ ...f, last_name:e.target.value })}
+      />
 
-      <input value={f.department} 
-             onChange={e=>setF({...f, department:e.target.value})}
-             placeholder="Department" /><br/><br/>
+      <input 
+        className="edit-input"
+        placeholder="Department"
+        value={f.department}
+        onChange={e => setF({ ...f, department:e.target.value })}
+      />
 
-      <input value={f.position} 
-             onChange={e=>setF({...f, position:e.target.value})}
-             placeholder="Position" /><br/><br/>
+      <input 
+        className="edit-input"
+        placeholder="Position"
+        value={f.position}
+        onChange={e => setF({ ...f, position:e.target.value })}
+      />
+
+      
+      <h3 style={{ marginTop: 15 }}>Profile Photo</h3>
+
+      <div className="photo-box">
+        {f.photo ? (
+          <img className="profile-pic" src={`http://localhost:8080/uploads/${f.photo}`} />
+        ) : (
+          <p>No photo uploaded</p>
+        )}
+
+        <input type="file" onChange={e => setPhoto(e.target.files[0])}/>
+        <button className="upload-btn" onClick={uploadPhoto}>Upload Photo</button>
+      </div>
 
 
-      {/* IMAGE SECTION */}
-      <h3>Profile Photo</h3>
-      {f.photo ? 
-        <img 
-          src={`http://localhost:8080/uploads/${f.photo}`} 
-          width="120" height="120"
-          style={{borderRadius:"10px",objectFit:"cover"}}
-        />
-        : <p>No Image Uploaded</p>
-      }<br/><br/>
-
-      <input type="file" onChange={e=>setPhoto(e.target.files[0])}/>
-      <button onClick={uploadPhoto} style={{marginLeft:10}}>Upload New Photo</button>
-
-      <br/><br/><hr/><br/>
-
-      {/* SAVE/CANCEL */}
-      <button onClick={save} style={{marginRight:10}}>💾 Save Changes</button>
-      <button onClick={()=>nav("/employees")}>❌ Cancel</button>
+      <div className="btn-row">
+        <button className="save-btn" onClick={save}>Save Changes</button>
+        <button className="cancel-btn" onClick={() => nav("/employees")}>Cancel</button>
+      </div>
 
     </div>
   );

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../api";
 
 export default function AddEmployee() {
 
@@ -11,72 +11,81 @@ export default function AddEmployee() {
     first_name:"",
     last_name:"",
     email:"",
+    department:"",
     position:"",
     salary:"",
-    date_of_joining:"",
-    department:""
+    date_of_joining:""
   });
 
   const submit = async () => {
 
-    // Validate required fields
     for (let key in f) {
-      if (!f[key]) return alert(`Missing field: ${key}`);
+      if (!f[key]) return alert(`Missing field: ${key.replace("_"," ")}`);
     }
-    if(!photo) return alert("Please upload a photo");
+    
+    if (!photo) return alert("Please upload a photo");
 
-    // Step 1 → Create Employee
-    const res = await axios.post("http://localhost:8080/api/v1/emp/employees", f);
-    const id = res.data.employee._id;
+    try {
+      const res = await api.post("/emp/employees", f);
+      const id = res.data.employee._id;
 
-    // Step 2 → Upload Photo
-    let fd = new FormData();
-    fd.append("photo", photo);
+      let fd = new FormData();
+      fd.append("photo", photo);
 
-    await axios.post(`http://localhost:8080/api/v1/emp/employees/upload/${id}`, fd);
+      await api.post(`/emp/employees/upload/${id}`, fd);
 
-    alert("Employee Added Successfully!");
-    nav("/employees");
+      alert("Employee Added Successfully!");
+      nav("/employees");
+
+    } catch (err) {
+      console.log(err);
+      alert("Error adding employee");
+    }
   };
 
   return (
-    <div style={{width:400,margin:"auto",textAlign:"center"}}>
-      <h2>Add Employee</h2>
+    <div className="login-container">
+      <div className="login-card" style={{width:450}}> 
+        
+        <h2>Add Employee</h2>
 
-      <input placeholder="First Name" 
-             value={f.first_name} 
-             onChange={e=>setF({...f,first_name:e.target.value})}/><br/><br/>
+        <input placeholder="First Name"
+          value={f.first_name}
+          onChange={e=>setF({...f,first_name:e.target.value})}/>
 
-      <input placeholder="Last Name" 
-             value={f.last_name} 
-             onChange={e=>setF({...f,last_name:e.target.value})}/><br/><br/>
+        <input placeholder="Last Name"
+          value={f.last_name}
+          onChange={e=>setF({...f,last_name:e.target.value})}/>
 
-      <input placeholder="Email" 
-             value={f.email} 
-             onChange={e=>setF({...f,email:e.target.value})}/><br/><br/>
+        <input placeholder="Email"
+          value={f.email}
+          onChange={e=>setF({...f,email:e.target.value})}/>
 
-      <input placeholder="Department" 
-             value={f.department} 
-             onChange={e=>setF({...f,department:e.target.value})}/><br/><br/>
+        <input placeholder="Department"
+          value={f.department}
+          onChange={e=>setF({...f,department:e.target.value})}/>
 
-      <input placeholder="Position" 
-             value={f.position} 
-             onChange={e=>setF({...f,position:e.target.value})}/><br/><br/>
+        <input placeholder="Position"
+          value={f.position}
+          onChange={e=>setF({...f,position:e.target.value})}/>
 
-      <input type="number" placeholder="Salary" 
-             value={f.salary} 
-             onChange={e=>setF({...f,salary:e.target.value})}/><br/><br/>
+        <input type="number" placeholder="Salary"
+          value={f.salary}
+          onChange={e=>setF({...f,salary:e.target.value})}/>
 
-      <label>Joining Date:</label><br/>
-      <input type="date"
-             value={f.date_of_joining}
-             onChange={e=>setF({...f,date_of_joining:e.target.value})}/><br/><br/>
+        <label style={{fontSize:"14px",float:"left",marginBottom:5}}>Joining Date</label>
+        <input type="date"
+          value={f.date_of_joining}
+          onChange={e=>setF({...f,date_of_joining:e.target.value})}/>
 
-      <input type="file" onChange={e=>setPhoto(e.target.files[0])}/><br/><br/>
+        <input type="file" onChange={e=>setPhoto(e.target.files[0])}/>
 
-      <button onClick={submit} style={{marginRight:10}}>Save</button>
-      <button onClick={()=>nav("/employees")}>Cancel</button>
+        <button onClick={submit}>Save</button>
+        <button style={{background:"#888", marginTop:10}} onClick={()=>nav("/employees")}>
+          Cancel
+        </button>
 
+      </div>
     </div>
   );
 }
