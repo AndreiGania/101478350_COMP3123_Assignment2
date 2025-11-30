@@ -3,39 +3,58 @@ import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Employees from "./components/Employees";
 import AddEmployee from "./components/AddEmployee";
-import ViewEmployee from "./components/ViewEmployee";
 import EditEmployee from "./components/EditEmployee";
+import ViewEmployee from "./components/ViewEmployee";
+import ProtectedRoute from "./components/ProtectedRoute";
 
-export default function App() {
-
-  const logout = () => {
-    localStorage.removeItem("token");
-    alert("Logged out");
-    window.location.href = "/login";   // <-- simple + safe redirect
-  };
+function App() {
+  const isLoggedIn = !!localStorage.getItem("token");
 
   return (
     <Router>
-      <nav style={{ background:"#eee", padding:10, marginBottom:20 }}>
-        
-        <Link to="/employees" style={{ marginRight:15 }}>Employees</Link>
-        <Link to="/employees/add" style={{ marginRight:15 }}>Add Employee</Link>
-        <Link to="/login" style={{ marginRight:15 }}>Login</Link>
-        <Link to="/signup" style={{ marginRight:15 }}>Signup</Link>
 
-        <button onClick={logout}>Logout</button>
+      <nav style={{ padding:10, background:"#eee", marginBottom:20 }}>
+        {isLoggedIn ? (
+          <>
+            <Link to="/login" style={{ marginRight:15 }}>Login</Link>
+            <Link to="/signup" style={{ marginRight:15 }}>Signup</Link>
+            <Link to="/employees" style={{ marginRight:15 }}>Employees</Link>
+            <button 
+              onClick={()=>{ localStorage.removeItem("token"); window.location="/login"; }}
+              style={{ marginLeft:15 }}
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <Link to="/login" style={{ marginRight:15 }}>Login</Link>
+            <Link to="/signup" style={{ marginRight:15 }}>Signup</Link>
+          </>
+        )}
       </nav>
 
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Signup />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/employees" element={<Employees />} />
-        <Route path="/employees/add" element={<AddEmployee />} />
-        <Route path="/employees/view/:id" element={<ViewEmployee />} />
-        <Route path="/employees/edit/:id" element={<EditEmployee />} />
+
+        <Route path="/employees" element={
+          <ProtectedRoute><Employees/></ProtectedRoute>
+        }/>
+        <Route path="/employees/add" element={
+          <ProtectedRoute><AddEmployee/></ProtectedRoute>
+        }/>
+        <Route path="/employees/edit/:id" element={
+          <ProtectedRoute><EditEmployee/></ProtectedRoute>
+        }/>
+        <Route path="/employees/view/:id" element={
+          <ProtectedRoute><ViewEmployee/></ProtectedRoute>
+        }/>
       </Routes>
 
     </Router>
   );
 }
+
+export default App;
