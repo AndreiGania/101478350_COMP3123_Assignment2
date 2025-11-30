@@ -15,11 +15,12 @@ function App() {
     <Router>
 
       <nav className="navbar">
-
         <div className="nav-left">
-          <Link to="/employees">Employees</Link>
-          <Link to="/signup">Signup</Link>
-          <Link to="/login">Login</Link>
+          
+          {isLoggedIn && <Link to="/employees">Employees</Link>}
+
+          {!isLoggedIn && <Link to="/signup">Signup</Link>}
+          {!isLoggedIn && <Link to="/login">Login</Link>}
         </div>
 
         {isLoggedIn && (

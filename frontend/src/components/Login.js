@@ -48,7 +48,7 @@ export default function Login() {
         <button onClick={handleLogin}>Login</button>
 
         <p style={{marginTop:"10px"}}>
-          No account? <a href="/signup">Create one</a>
+          No account? <a href="/signup">Sign Up</a>
         </p>
       </div>
     </div>
